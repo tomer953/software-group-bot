@@ -1,4 +1,3 @@
-import { Middleware } from "telegraf";
 import { TelegrafContext } from "telegraf/typings/context";
 const User = require('../models/user.model');
 
@@ -13,7 +12,19 @@ export async function registerUserMiddleware(ctx: TelegrafContext, next: () => P
                 user = await new User({ _id: message?.from?.id, ...message.from }).save()
             }
             (<any>ctx).user = user;
+
+            // add isAdmin to ctx for simple check
+            if (user.role == 'admin') {
+                (<any>ctx).isAdmin = true;
+            }
         }
     }
     await next();
+}
+
+export async function isAdminMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
+    if (!(<any>ctx).isAdmin) {
+        return ctx.reply('Unauthorized access.')
+    }
+    return await next();
 }
