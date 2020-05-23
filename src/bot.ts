@@ -5,6 +5,8 @@ import { session, Stage } from 'telegraf'
 import { BirthdayWizard } from './scenes/birthday.scene'
 import { addBirthdayMiddleware, birthdaySchedular } from './controllers/birthday.controller';
 import schedule from 'node-schedule';
+import { getQuoteMiddleware, quoteSchedular } from './controllers/quote.controller';
+
 
 // Scenes registration
 const stage = new Stage([
@@ -18,11 +20,14 @@ bot.use(registerUserMiddleware) // add ctx.user
 
 // handle commands
 bot.command('/add_birthday', isAdminMiddleware, addBirthdayMiddleware);
+bot.command('/quote', getQuoteMiddleware);
 
 bot.command('ping', (ctx: TelegrafContext) => {
     let user: any = (<any>ctx).user;
     ctx.reply(user.first_name + ', pong!');
 })
 
+
 // initialize schedulars
 schedule.scheduleJob({ hour: 7, minute: 30 }, birthdaySchedular); // check for birthdays
+schedule.scheduleJob({ hour: 10, minute: 30 }, quoteSchedular);   // send daily quote
