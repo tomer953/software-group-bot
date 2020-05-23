@@ -10,7 +10,7 @@ const scene = new WizardScene("birthday_wizard",
 
     // 1. ask display name
     (ctx: Context) => {
-        ctx.reply("User display name (as will appear in the greeting):")
+        ctx.reply("הכנס שם שיוצג בברכה:")
         return (<any>ctx).wizard.next();
     },
 
@@ -19,18 +19,18 @@ const scene = new WizardScene("birthday_wizard",
         let name = ctx.message?.text;
 
         if (ctx.message?.text?.startsWith('/cancel')) {
-            ctx.reply('Aborting current wizard');
+            ctx.reply('תהליך נוכחי בוטל.');
             (<any>ctx).scene.leave()
             return;
         }
 
         //  display name validation
         if (!name || name.length < 3 || name.length > 30 || name.startsWith('/')) {
-            ctx.reply('invalid display name, try again or type /cancel to abort');
+            ctx.reply('שם התצוגה אינו חוקי. אנא נסה שנית, או הקש/n/cancel לביטול');
             return;
         }
 
-        ctx.reply('Ok, now send me the birthday: DD-MM-YYYY');
+        ctx.reply('מצוין, שלח תאריך לידה בפורמט: DD-MM-YYYY\nאם השנה לא ידועה הכנס סתם שנה');
         (<any>ctx).wizard.state.name = name;
         return (<any>ctx).wizard.next();
     },
@@ -38,7 +38,7 @@ const scene = new WizardScene("birthday_wizard",
     (ctx: Context) => {
 
         if (ctx.message?.text?.startsWith('/cancel')) {
-            ctx.reply('Aborting current wizard');
+            ctx.reply('תהליך נוכחי בוטל.');
             (<any>ctx).scene.leave()
             return;
         }
@@ -49,11 +49,11 @@ const scene = new WizardScene("birthday_wizard",
 
         // date validation
         if (!momentDate.isValid()) {
-            ctx.reply('Invalid date - send me the birthday: DD-MM-YYYY or type /cancel to abort');
+            ctx.reply('תאריך אינו תקין, אנא שלח בפורמט: DD-MM-YYYY\n/cancel או הקש');
             return;
         }
 
-        let _msg = `Ok, should I save?
+        let _msg = `תודה, האם לשמור?
         \nDisplay name: ${(<any>ctx).wizard.state.name}
         \nBirthday: ${birthday}`
         let keyboard = Markup.inlineKeyboard([
@@ -70,29 +70,27 @@ const scene = new WizardScene("birthday_wizard",
         if (ctx.updateType == 'callback_query') {
 
             if (ctx.callbackQuery?.data == "SAVE_BDAY") {
-                console.log("SAVE!");
                 ctx.answerCbQuery();
-                ctx.editMessageText("Saved.");
                 await new Birthday({
                     name: (<any>ctx).wizard.state.name,
                     birthday: (<any>ctx).wizard.state.birthday
                 }).save();
+                ctx.editMessageText("נשמר בהצלחה");
                 (<any>ctx).scene.leave();
 
             } else if (ctx.callbackQuery?.data == "CANCEL_BDAY") {
-                console.log("CANCEL");
                 ctx.answerCbQuery();
-                ctx.editMessageText("Cancled");
+                ctx.editMessageText("התהליך בוטל");
                 (<any>ctx).scene.leave();
 
             }
         } else if (ctx.updateType == 'message') {
             if (ctx.message?.text?.startsWith('/cancel')) {
-                ctx.reply('Aborting current wizard');
+                ctx.reply('תהליך נוכחי בוטל.');
                 (<any>ctx).scene.leave()
 
             } else {
-                ctx.reply('You are in the middle of wizard, type /cancel to abort.');
+                ctx.reply('תהליך פעיל, כדי לבטל אותו לחץ על\n/cancel');
             }
         }
     }
