@@ -36,4 +36,4 @@ bot.action(/CORONA:DATA:(.+)/, sendCoronaDataHandler);
 // initialize schedulars
 schedule.scheduleJob({ hour: 7, minute: 30 }, birthdaySchedular); // check for birthdays
 schedule.scheduleJob({ hour: 10, minute: 30 }, quoteSchedular);   // send daily quote
-schedule.scheduleJob("*/15 * * * *", updateCoronaCountries);     // update corona data every 15 minutes
+schedule.scheduleJob("*/10 * * * *", updateCoronaCountries);     // update corona data every 10 minutes
