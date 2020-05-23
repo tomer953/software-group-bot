@@ -3,7 +3,8 @@ import { TelegrafContext } from 'telegraf/typings/context';
 import { registerUserMiddleware, isAdminMiddleware } from './controllers/user.controller';
 import { session, Stage } from 'telegraf'
 import { BirthdayWizard } from './scenes/birthday.scene'
-import { addBirthdayMiddleware } from './controllers/birthday.controller';
+import { addBirthdayMiddleware, birthdaySchedular } from './controllers/birthday.controller';
+import schedule from 'node-schedule';
 
 // Scenes registration
 const stage = new Stage([
@@ -22,3 +23,6 @@ bot.command('ping', (ctx: TelegrafContext) => {
     let user: any = (<any>ctx).user;
     ctx.reply(user.first_name + ', pong!');
 })
+
+// initialize schedulars
+schedule.scheduleJob({ hour: 7, minute: 30 }, birthdaySchedular); // check for birthdays
