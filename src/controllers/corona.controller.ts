@@ -39,29 +39,32 @@ export async function getCoronaMiddleware(ctx: TelegrafContext, next: () => Prom
 
 function getCoronaDataMessage(country: CoronaCountryData) {
 
-    let result = country.country + " נתוני קורונה על 🦠" + "\r\n\r\n";
-    result += "סה\"כ מקרים:\t" + numberWithCommas(country.cases.total) + "\r\n";
+    let msg = country.country + " נתוני קורונה על 🦠" + "\r\n\r\n";
+    msg += "סה\"כ מקרים:\t" + numberWithCommas(country.cases.total) + "\r\n";
     if (country.cases.active) {
-        result += "חולים פעילים:\t" + numberWithCommas(country.cases.active) + "\r\n";
+        msg += "חולים פעילים:\t" + numberWithCommas(country.cases.active) + "\r\n";
     }
-    result += "מקרים חדשים:\t" + country.cases.new + "\r\n";
-    result += "מקרי מוות:\t" + numberWithCommas(country.deaths.total) + "\r\n";
-    result += "מקרי מוות חדשים:\t" + country.deaths.new + "\r\n";
-    result += "במצב חמור:\t" + numberWithCommas(country.cases.critical) + "\r\n";
-    result += "מחלימים:\t" + numberWithCommas(country.cases.recovered) + "\r\n";
+    if (country.cases.new) {
+        msg += "מקרים חדשים:\t" + country.cases.new + "\r\n";
+    }
+    msg += "מקרי מוות:\t" + numberWithCommas(country.deaths.total) + "\r\n";
+    if (country.deaths.new) {
+        msg += "מקרי מוות חדשים:\t" + country.deaths.new + "\r\n";
+    }
+    msg += "במצב חמור:\t" + numberWithCommas(country.cases.critical) + "\r\n";
+    msg += "מחלימים:\t" + numberWithCommas(country.cases.recovered) + "\r\n";
 
     let deathPer = 0;
     deathPer = country.deaths.total * 100 / country.cases.total;
     if (deathPer > 0) {
-        result += "אחוז תמותה:\t" + deathPer.toFixed(2) + "%\r\n";
+        msg += "אחוז תמותה:\t" + deathPer.toFixed(2) + "%\r\n";
     }
-    return result;
+    return msg;
 }
 
 // update countries list from api
 export async function updateCoronaCountries(): Promise<CoronaCountryData[]> {
     try {
-        console.log('updating corona countries...');
         let response = await axios({
             "method": "GET",
             "url": "https://covid-193.p.rapidapi.com/statistics",
@@ -131,6 +134,7 @@ export async function sendCoronaDataHandler(ctx: TelegrafContext, next: () => Pr
             let msg = getCoronaDataMessage(findCountry);
             ctx.reply(msg);
         }
+        ctx.answerCbQuery();
     }
 }
 
