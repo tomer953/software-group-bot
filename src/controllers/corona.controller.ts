@@ -65,7 +65,6 @@ function getCoronaDataMessage(country: CoronaCountryData) {
 // update countries list from api
 export async function updateCoronaCountries(): Promise<CoronaCountryData[]> {
     try {
-        console.log('updating corona countries...');
         let response = await axios({
             "method": "GET",
             "url": "https://covid-193.p.rapidapi.com/statistics",

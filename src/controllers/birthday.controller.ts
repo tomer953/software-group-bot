@@ -54,7 +54,7 @@ const stickers = [
 ]
 
 function getGreetingMessage(name: string) {
-    return `${name},
+    return `${name},D
     ${random(greets)} ${random(emojis)}
     `
 }

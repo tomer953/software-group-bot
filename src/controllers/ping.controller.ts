@@ -6,7 +6,6 @@ export async function pingHeroku() {
     try {
         await axios.get(URL);
     } catch (error) {
-        // probably will return error, but still does the ping work
-        // so ignore it
+        // ignore error from the ping
     }
 }
