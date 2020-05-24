@@ -7,6 +7,7 @@ import { addBirthdayMiddleware, birthdaySchedular } from './controllers/birthday
 import schedule from 'node-schedule';
 import { getQuoteMiddleware, quoteSchedular } from './controllers/quote.controller';
 import { getCoronaMiddleware, changeCoronaPageHandler, sendCoronaDataHandler, updateCoronaCountries } from './controllers/corona.controller';
+import { pingHeroku } from './controllers/ping.controller';
 
 
 // Scenes registration
@@ -37,3 +38,4 @@ bot.action(/CORONA:DATA:(.+)/, sendCoronaDataHandler);
 schedule.scheduleJob({ hour: 7, minute: 30 }, birthdaySchedular); // check for birthdays
 schedule.scheduleJob({ hour: 10, minute: 30 }, quoteSchedular);   // send daily quote
 schedule.scheduleJob("*/10 * * * *", updateCoronaCountries);     // update corona data every 10 minutes
+schedule.scheduleJob("*/10 * * * *", pingHeroku);                // ping own app to prevent idle
