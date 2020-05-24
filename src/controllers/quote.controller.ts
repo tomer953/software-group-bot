@@ -11,7 +11,6 @@ export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promi
         let msg = `💡 ציטוט אקראי:\n
         "${quote.quote}"\n
         (${quote.author})`;
-        console.log(ctx.message?.chat);
         return ctx.reply(msg);
     } catch (error) {
         ctx.reply('מצטער, אין לי משהו חכם לומר כרגע 🤐');

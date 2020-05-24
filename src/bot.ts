@@ -8,6 +8,7 @@ import schedule from 'node-schedule';
 import { getQuoteMiddleware, quoteSchedular } from './controllers/quote.controller';
 import { getCoronaMiddleware, changeCoronaPageHandler, sendCoronaDataHandler, updateCoronaCountries } from './controllers/corona.controller';
 import { pingHeroku } from './controllers/ping.controller';
+import { statsMiddleware } from './controllers/statistics.controller';
 
 
 // Scenes registration
@@ -19,6 +20,7 @@ const stage = new Stage([
 bot.use(session());
 bot.use((<any>stage).middleware());
 bot.use(registerUserMiddleware) // add ctx.user
+bot.use(statsMiddleware);       // update statistics
 
 // handle commands
 bot.command('/add_birthday', isAdminMiddleware, addBirthdayMiddleware);
