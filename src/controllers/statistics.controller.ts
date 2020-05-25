@@ -62,8 +62,8 @@ export async function statsMiddleware(ctx: Context, next: () => Promise<void>) {
                 incQuery.videos = 1;
             }
             await doc.updateOne({ $inc: incQuery });
-            await next();
         }
+        await next();
     } catch (error) {
         console.log(error);
         await next(); // continue if fails
