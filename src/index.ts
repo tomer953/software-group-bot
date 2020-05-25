@@ -28,3 +28,4 @@ if (process.env.NODE_ENV === 'PROD') {
 require('./db').connect().catch((err: any) => console.log('unable to connect to db'))
 
 console.log('Bot server started in the ' + process.env.NODE_ENV + ' mode');
+console.log('new Date() = ' + new Date());

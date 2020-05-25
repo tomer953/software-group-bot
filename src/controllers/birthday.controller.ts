@@ -1,5 +1,4 @@
 import { SceneContext } from 'telegraf/typings/stage';
-import { TelegrafContext } from 'telegraf/typings/context';
 import moment = require('moment');
 import { bot } from '../index';
 import { Context } from 'telegraf';
@@ -9,17 +8,18 @@ const Birthday = require('../models/birthday.model');
 // group id to send the bday message
 let groupId = process.env.GROUP_CHAT_ID || "";
 
-export async function addBirthdayMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
+export async function addBirthdayMiddleware(ctx: Context, next: () => Promise<void>) {
     let scene: SceneContext<any> = (<any>ctx).scene;
     await scene.enter('birthday_wizard');
 }
 
 export async function birthdaySchedular() {
     try {
+        console.log('looking for birthdays...');
         let bdays = await Birthday.find();
 
         for (const bday of bdays) {
-            let momentBirthday = moment(bday.birthday);
+            let momentBirthday = moment(bday.birthday, 'DD-MM-YYYY');
             if (isTodayBirthday(momentBirthday)) {
 
                 // send happy birthday msg + sticker
@@ -37,6 +37,8 @@ const greets = [
     'מזל טוב עד 120',
     'יום הולדת שמח!',
     'מזל טוב ליום הולדתך',
+    'מזל טוב! לא לשכוח להביא כיבוד',
+    'מזל טוב! מקווה שאתה בדרך עם הכיבוד',
 ];
 
 const emojis = ["🎈", "😍","🍰", "🥳", "🎂", "😊", "👏"];
@@ -54,7 +56,7 @@ const stickers = [
 ]
 
 function getGreetingMessage(name: string) {
-    return `${name},D
+    return `${name},
     ${random(greets)} ${random(emojis)}
     `
 }

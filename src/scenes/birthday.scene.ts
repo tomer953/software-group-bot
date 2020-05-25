@@ -45,7 +45,6 @@ const scene = new WizardScene("birthday_wizard",
 
         let birthday = (<any>ctx).message.text;
         let momentDate = moment(birthday, 'DD-MM-YYYY')
-        momentDate.hour(7);
 
         // date validation
         if (!momentDate.isValid()) {
@@ -62,7 +61,7 @@ const scene = new WizardScene("birthday_wizard",
         ]).extra()
         ctx.reply(_msg, keyboard);
 
-        (<any>ctx).wizard.state.birthday = momentDate.toDate();
+        (<any>ctx).wizard.state.birthday = `${momentDate.format('DD-MM-YYYY')}`;
         return (<any>ctx).wizard.next();
     },
     // wait for save or cancel
