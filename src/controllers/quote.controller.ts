@@ -2,6 +2,7 @@ import { TelegrafContext } from "telegraf/typings/context";
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 import { bot } from '../index';
+import { isWeekend } from "../helpers/dates";
 
 let groupId = process.env.GROUP_CHAT_ID || "";
 
@@ -68,12 +69,10 @@ async function getQuote(): Promise<Quote> {
 
 export async function quoteSchedular() {
     try {
-        // ignore if saturday
-        let today = new Date();
-        if (today.getDay() == 6) {
+        // ignore if weekend
+        if (isWeekend()) {
             return;
         }
-
         let quote = await getQuote();
         let msg = `💡 הציטוט היומי:\n
         "${quote.quote}"\n

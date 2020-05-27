@@ -44,4 +44,3 @@ schedule.scheduleJob({ hour: (7-GMT), minute: 30 }, birthdaySchedular); // check
 schedule.scheduleJob({ hour: (13-GMT), minute: 30 }, quoteSchedular);   // send daily quote
 schedule.scheduleJob("*/10 * * * *", updateCoronaCountries);     // update corona data every 10 minutes
 schedule.scheduleJob("*/10 * * * *", pingHeroku);                // ping own app to prevent idle
-schedule.scheduleJob({ dayOfWeek: 5, hour: (11-GMT), minute: 0}, shabatSchedular); // send Shabat times
