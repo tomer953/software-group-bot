@@ -1,13 +1,12 @@
 
 import axios from 'axios';
-import { TelegrafContext } from 'telegraf/typings/context';
 import { Markup, Context } from 'telegraf';
 import { CoronaCountryData, CoronaStatisticsResponse } from '../models/corona.model';
 
 let countries: CoronaCountryData[];
 let X_RAPIDAPI_KEY = process.env.X_RAPIDAPI_KEY || "";
 
-export async function getCoronaMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
+export async function getCoronaMiddleware(ctx: Context, next: () => Promise<void>) {
     try {
         if (!countries) {
             await updateCoronaCountries();
@@ -105,7 +104,7 @@ export async function updateCoronaCountries(): Promise<CoronaCountryData[]> {
     }
 }
 
-export async function changeCoronaPageHandler(ctx: TelegrafContext, next: () => Promise<void>) {
+export async function changeCoronaPageHandler(ctx: Context, next: () => Promise<void>) {
 
     try {
         if (!countries) {
@@ -122,7 +121,7 @@ export async function changeCoronaPageHandler(ctx: TelegrafContext, next: () => 
     }
 }
 
-export async function sendCoronaDataHandler(ctx: TelegrafContext, next: () => Promise<void>) {
+export async function sendCoronaDataHandler(ctx: Context, next: () => Promise<void>) {
 
     if (!countries) {
         await updateCoronaCountries();
