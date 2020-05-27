@@ -68,6 +68,12 @@ async function getQuote(): Promise<Quote> {
 
 export async function quoteSchedular() {
     try {
+        // ignore if saturday
+        let today = new Date();
+        if (today.getDay() == 6) {
+            return;
+        }
+
         let quote = await getQuote();
         let msg = `💡 הציטוט היומי:\n
         "${quote.quote}"\n

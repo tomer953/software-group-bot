@@ -9,6 +9,7 @@ import { getQuoteMiddleware, quoteSchedular } from './controllers/quote.controll
 import { getCoronaMiddleware, changeCoronaPageHandler, sendCoronaDataHandler, updateCoronaCountries } from './controllers/corona.controller';
 import { pingHeroku } from './controllers/ping.controller';
 import { statsMiddleware } from './controllers/statistics.controller';
+import { shabatSchedular, getShabatMiddleware } from './controllers/shabat.controller';
 
 
 // Scenes registration
@@ -26,6 +27,7 @@ bot.use(statsMiddleware);       // update statistics
 bot.command('/add_birthday', isAdminMiddleware, addBirthdayMiddleware);
 bot.command('/quote', getQuoteMiddleware);
 bot.command('/corona', getCoronaMiddleware);
+bot.command('/shabat', getShabatMiddleware);
 
 bot.command('ping', (ctx: TelegrafContext) => {
     let user: any = (<any>ctx).user;
@@ -42,3 +44,4 @@ schedule.scheduleJob({ hour: (7-GMT), minute: 30 }, birthdaySchedular); // check
 schedule.scheduleJob({ hour: (13-GMT), minute: 30 }, quoteSchedular);   // send daily quote
 schedule.scheduleJob("*/10 * * * *", updateCoronaCountries);     // update corona data every 10 minutes
 schedule.scheduleJob("*/10 * * * *", pingHeroku);                // ping own app to prevent idle
+schedule.scheduleJob({ dayOfWeek: 5, hour: (11-GMT), minute: 0}, shabatSchedular); // send Shabat times
