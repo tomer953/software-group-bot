@@ -23,6 +23,25 @@ export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promi
     }
 }
 
+export async function quoteSchedular() {
+    try {
+        // ignore if weekend
+        if (isWeekend()) {
+            return;
+        }
+        let quote = await getQuote();
+        let msg = `💡 הציטוט היומי:\n
+        "${quote.quote}"`
+        if (quote.author) {
+            msg += `\n(${quote.author})`;
+        }
+        await bot.telegram.sendMessage(groupId, msg);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 export interface Quote {
     rank?: string;
     quote?: string;
@@ -76,18 +95,3 @@ async function getQuote(): Promise<Quote> {
 //     }
 // }
 
-export async function quoteSchedular() {
-    try {
-        // ignore if weekend
-        if (isWeekend()) {
-            return;
-        }
-        let quote = await getQuote();
-        let msg = `💡 הציטוט היומי:\n
-        "${quote.quote}"\n
-        (${quote.author})`;
-        await bot.telegram.sendMessage(groupId, msg);
-    } catch (error) {
-        console.log(error);
-    }
-}
