@@ -7,7 +7,10 @@ import quotes from '../assets/quotes.json';
 import { random } from '../helpers/random';
 
 let groupId = process.env.GROUP_CHAT_ID || "";
+let ENABLE_QUOTES = process.env.ENABLE_QUOTES || true;
 
+// command: /quote
+// result: send random quote
 export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
     try {
         let quote = await getQuote();
@@ -22,6 +25,20 @@ export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promi
         console.log(error);
     }
 }
+
+// command: /toogle_quotes
+// result: toggle daily quotes on/off
+export async function toggleQuotesMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
+    try {
+        ENABLE_QUOTES = !ENABLE_QUOTES;
+        let reply = 'הציטוט היומי עכשיו ';
+        reply += (ENABLE_QUOTES) ? 'דלוק ✅' : 'כבוי ❌';
+        return ctx.reply(reply)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export interface Quote {
     rank?: string;
@@ -78,8 +95,8 @@ async function getQuote(): Promise<Quote> {
 
 export async function quoteSchedular() {
     try {
-        // ignore if weekend
-        if (isWeekend()) {
+        // ignore if weekend, or if quotes disabled
+        if (isWeekend() || !ENABLE_QUOTES) {
             return;
         }
         let quote = await getQuote();

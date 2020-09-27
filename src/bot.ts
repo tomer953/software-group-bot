@@ -4,7 +4,7 @@ import { session, Stage } from 'telegraf'
 import { BirthdayWizard } from './scenes/birthday.scene'
 import { addBirthdayMiddleware, birthdaySchedular } from './controllers/birthday.controller';
 import schedule from 'node-schedule';
-import { getQuoteMiddleware, quoteSchedular } from './controllers/quote.controller';
+import { getQuoteMiddleware, quoteSchedular, toggleQuotesMiddleware } from './controllers/quote.controller';
 import { getCoronaMiddleware, changeCoronaPageHandler, sendCoronaDataHandler, updateCoronaCountries } from './controllers/corona.controller';
 import { pingHeroku, pingMiddleware } from './controllers/ping.controller';
 import { statsMiddleware } from './controllers/statistics.controller';
@@ -31,6 +31,7 @@ bot.use(statsMiddleware);       // update statistics
 bot.command('ping', pingMiddleware);
 bot.command('add_birthday', isAdminMiddleware, addBirthdayMiddleware);
 bot.command('quote', getQuoteMiddleware);
+bot.command('toggle_quotes', isAdminMiddleware, toggleQuotesMiddleware);
 bot.command('corona', getCoronaMiddleware);
 bot.command('shabat', getShabatMiddleware);
 
