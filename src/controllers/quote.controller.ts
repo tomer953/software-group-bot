@@ -39,6 +39,24 @@ export async function toggleQuotesMiddleware(ctx: TelegrafContext, next: () => P
     }
 }
 
+export async function quoteSchedular() {
+    try {
+        // ignore if weekend, or if quotes disabled
+        if (isWeekend() || !ENABLE_QUOTES) {
+            return;
+        }
+        let quote = await getQuote();
+        let msg = `💡 הציטוט היומי:\n
+        "${quote.quote}"`
+        if (quote.author) {
+            msg += `\n(${quote.author})`;
+        }
+        await bot.telegram.sendMessage(groupId, msg);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export interface Quote {
     rank?: string;
@@ -92,19 +110,3 @@ async function getQuote(): Promise<Quote> {
 //         return Promise.reject(error);
 //     }
 // }
-
-export async function quoteSchedular() {
-    try {
-        // ignore if weekend, or if quotes disabled
-        if (isWeekend() || !ENABLE_QUOTES) {
-            return;
-        }
-        let quote = await getQuote();
-        let msg = `💡 הציטוט היומי:\n
-        "${quote.quote}"\n
-        (${quote.author})`;
-        await bot.telegram.sendMessage(groupId, msg);
-    } catch (error) {
-        console.log(error);
-    }
-}
