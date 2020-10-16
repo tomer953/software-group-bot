@@ -7,7 +7,7 @@ import quotes from '../assets/quotes.json';
 import { random } from '../helpers/random';
 
 let groupId = process.env.GROUP_CHAT_ID || "";
-let ENABLE_QUOTES = process.env.ENABLE_QUOTES || true;
+let ENABLE_QUOTES = process.env.ENABLE_QUOTES || false;
 
 // command: /quote
 // result: send random quote
@@ -31,7 +31,7 @@ export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promi
 export async function toggleQuotesMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
     try {
         ENABLE_QUOTES = !ENABLE_QUOTES;
-        let reply = 'הציטוט היומי עכשיו ';
+        let reply = 'הציטוט השבועי עכשיו ';
         reply += (ENABLE_QUOTES) ? 'דלוק ✅' : 'כבוי ❌';
         return ctx.reply(reply)
     } catch (error) {
@@ -46,7 +46,7 @@ export async function quoteSchedular() {
             return;
         }
         let quote = await getQuote();
-        let msg = `💡 הציטוט היומי:\n
+        let msg = `💡 הציטוט השבועי:\n
         "${quote.quote}"`
         if (quote.author) {
             msg += `\n(${quote.author})`;

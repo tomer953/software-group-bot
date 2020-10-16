@@ -42,6 +42,6 @@ bot.action(/CORONA:DATA:(.+)/, sendCoronaDataHandler);
 // initialize schedulars
 const GMT: number = +(process.env.GMT || 3);
 schedule.scheduleJob({ hour: (7 - GMT), minute: 30 }, birthdaySchedular); // check for birthdays
-schedule.scheduleJob({ hour: (13 - GMT), minute: 30 }, quoteSchedular);   // send daily quote
+schedule.scheduleJob({ dayOfWeek: 4, hour: (13 - GMT), minute: 0 }, quoteSchedular);   // send daily quote
 schedule.scheduleJob("*/10 * * * *", updateCoronaCountries);     // update corona data every 10 minutes
 schedule.scheduleJob("*/10 * * * *", pingHeroku);                // ping own app to prevent idle
