@@ -22,5 +22,5 @@ export async function initSchedulars() {
     BotSchedulars.jobs.push(schedule.scheduleJob({ dayOfWeek: 4, hour: (13 - BotSchedulars.GMT), minute: 0 }, quoteSchedular));   // send weekly quote
     BotSchedulars.jobs.push(schedule.scheduleJob("*/10 * * * *", updateCoronaCountries));     // update corona data every 10 minutes
     BotSchedulars.jobs.push(schedule.scheduleJob("*/10 * * * *", pingHeroku));                // ping own app to prevent idle
-    BotSchedulars.jobs.push(schedule.scheduleJob("*/2 * * * *", checkForGMTChanges));        // check for GMT changes
+    BotSchedulars.jobs.push(schedule.scheduleJob({ hour: (5 - BotSchedulars.GMT), minute: 0 }, checkForGMTChanges));        // check for GMT changes
 };
