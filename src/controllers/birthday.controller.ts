@@ -39,6 +39,7 @@ const greets = [
     'מזל טוב ליום הולדתך',
     'מזל טוב! לא לשכוח להביא כיבוד',
     'מזל טוב! מקווה שאתה בדרך עם הכיבוד',
+    'חשבת שאני אשכח? מזל טוב ליום ההולדת!',
 ];
 
 const emojis = ["🎈", "😍","🍰", "🥳", "🎂", "😊", "👏"];
@@ -53,6 +54,16 @@ const stickers = [
     "CAACAgIAAxkBAAINfV7JNjPAMY42GBYMbTRz7k-3v1K4AAL5AQACygMGC77AxM_ztKG6GQQ", // FredThePug
     "CAACAgEAAxkBAAINfl7JNkvRhaMKMzN7bmnR8BUsdlkuAAIlAAM4DoIRWlSL7ThZeAUZBA", // MintyZebra
     "CAACAgIAAxkBAAINf17JNo8grwmoKM23OqzWr12Mq6ijAAJdAQACFkJrClEqo1WBBrUdGQQ", // SweetyStrawberry
+    "CAACAgIAAxkBAAEai9Nf6dJMN0YDjkbd9jBHsQ2RuocfigACpwADO2AkFO1Zfh42qVroHgQ", // LamaProblama
+    "CAACAgIAAxkBAAEai9tf6dKfCS0McvvBE2W_H1MFLJZsQQACNwEAAlKJkSPVFECnfG0SGh4E", // Orangoutang
+    "CAACAgIAAxkBAAEai-Nf6dMCH4Bc8GBhAZkHNIdIo6RULwACLQAD8NhFFk3hEzlwu14UHgQ", // Cupman
+    "CAACAgIAAxkBAAEai-pf6dMoPQrh1DGlyd4S4mkksOlx1QAC9AADwZGyJCWYXOxpJn6oHgQ", // GoodBoy
+    "CAACAgIAAxkBAAEai-9f6dNEfI8iw5mPqnd764BRAjrY0AACCwEAAvcCyA_F9DuYlapx2x4E", // Buddy_Bear
+    "CAACAgIAAxkBAAEai_Jf6dNhkx8wir5sgmlt0Qaoaxy54gACZQQAApzW5wq6X_Zb0mSjiB4E", // MooingCow
+    "CAACAgIAAxkBAAEai_hf6dON73eJCWKgzFUbTZUeXOLxdgACcAADDbbSGfNwXQUmdM0XHgQ", // JackTheParrot
+    "CAACAgIAAxkBAAEai_1f6dPB22W-HOGywZ1xIInUZeSolAACTAEAAjDUnRH33m9fN4M5HB4E", // TheMoomintroll
+    "CAACAgIAAxkBAAEajAJf6dPrO2Rm_F1EcbV9NBWQlLJ1BAACdwUAAj-VzApljNMsSkHZTh4", // MiaBunny
+    "CAACAgIAAxkBAAEajApf6dQaW6FmGgRUjA-DrYIFaxQVlgAC8QAD9wLID6cr0xBOAAF4Rx4E", // HomeElectronics
 ]
 
 function getGreetingMessage(name: string) {
