@@ -23,10 +23,11 @@ export async function birthdaySchedular() {
             if (isTodayBirthday(momentBirthday)) {
 
                 // send happy birthday msg + sticker
-                await bot.telegram.sendMessage(groupId, getGreetingMessage(bday.name));
+                let greet = getGreetingMessage(bday)
+                await bot.telegram.sendMessage(groupId, greet);
                 await bot.telegram.sendSticker(groupId, random(stickers));
 
-            } 
+            }
         }
     } catch (error) {
         console.log(error);
@@ -42,7 +43,7 @@ const greets = [
     'חשבת שאני אשכח? מזל טוב ליום ההולדת!',
 ];
 
-const emojis = ["🎈", "😍","🍰", "🥳", "🎂", "😊", "👏"];
+const emojis = ["🎈", "😍", "🍰", "🥳", "🎂", "😊", "👏"];
 const stickers = [
     "CAACAgIAAxkBAAINcF7JNH_4f9bjpKfykA00dIBEmpbsAAIUAAOAQrscef3dUpFA6JMZBA", // SeaKingdom
     "CAACAgIAAxkBAAINcV7JNLyMKJ6zZ6Tbmg40tCat1wKhAAIdAAOvxlEaXI764QrPb7wZBA", // Snail
@@ -64,11 +65,18 @@ const stickers = [
     "CAACAgIAAxkBAAEai_1f6dPB22W-HOGywZ1xIInUZeSolAACTAEAAjDUnRH33m9fN4M5HB4E", // TheMoomintroll
     "CAACAgIAAxkBAAEajAJf6dPrO2Rm_F1EcbV9NBWQlLJ1BAACdwUAAj-VzApljNMsSkHZTh4", // MiaBunny
     "CAACAgIAAxkBAAEajApf6dQaW6FmGgRUjA-DrYIFaxQVlgAC8QAD9wLID6cr0xBOAAF4Rx4E", // HomeElectronics
+    "CAACAgEAAxkBAAEkdatg0YBUVUgSmK229etg2dEMkhePRQACOgEAAlPMkEfITpc2CBnS8R8E", // SpottyGiraffe (https://t.me/addstickers/SpottyGiraffe)
+    "CAACAgIAAxkBAAEkdbJg0YCQiyk9vtz174-gBdBe0jN0EwACswADMNSdET9j0fISlCKpHwQ", // MonkeyMix (https://t.me/addstickers/MonkeyMix)
+    "CAACAgIAAxkBAAEkdb1g0YEvMTinhnDt2_BkCY9LKL2IOwACQQADKA9qFPDp0yN1HEZhHwQ", // Cat2O (https://t.me/addstickers/Cat2O)
 ]
 
-function getGreetingMessage(name: string) {
-    return `${name},
-    ${random(greets)} ${random(emojis)}
+function getGreetingMessage(bday: any) {
+    let greet = random(greets);
+    if (bday.gender == 'female') {
+        greet = greet.replace(/אתה/g, 'את');
+    }
+    return `${bday.name},
+    ${greet} ${random(emojis)}
     `
 }
 
