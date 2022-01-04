@@ -9,7 +9,7 @@ export async function shaharSchedular() {
             return;
         }
         // if we skipped the weekend, send in the next sunday instead
-        if (d.getDate() == 2 || d.getDate() == 3 && d.getDay() != 0) {
+        if ((d.getDate() == 2 || d.getDate() == 3) && d.getDay() != 0) {
             return;
         }
 
