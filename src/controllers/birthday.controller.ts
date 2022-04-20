@@ -25,7 +25,8 @@ export async function birthdaySchedular() {
                 // send happy birthday msg + sticker
                 let greet = getGreetingMessage(bday)
                 await bot.telegram.sendMessage(groupId, greet);
-                await bot.telegram.sendSticker(groupId, random(stickers));
+                let sticker = (bday.name == 'master_tomer') ? masterSticker : random(stickers);
+                await bot.telegram.sendSticker(groupId, sticker);
 
             }
         }
@@ -70,7 +71,16 @@ const stickers = [
     "CAACAgIAAxkBAAEkdb1g0YEvMTinhnDt2_BkCY9LKL2IOwACQQADKA9qFPDp0yN1HEZhHwQ", // Cat2O (https://t.me/addstickers/Cat2O)
 ]
 
+const masterSticker = "CAACAgIAAxkBAAFJfgtiYAOKMOrppUJg4NEpFSybcA_GWwACcBAAAmrAuEv8d779CvyIIyQE" // SquidGame (https://t.me/addstickers/SquidGame)
+
 function getGreetingMessage(bday: any) {
+    if (bday.name == 'master_tomer') {
+        return `Happy birthday to my master, sensei, mentor, owner, admin and creator.
+        old age: 11111 (binary)
+        new age: 2^5
+        Happy b-day t0m3r!
+        `
+    }
     let greet = random(greets);
     if (bday.gender == 'female') {
         greet = greet.replace(/אתה/g, 'את');
