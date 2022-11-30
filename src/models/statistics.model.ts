@@ -1,6 +1,23 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose';
 
-const schema = new Schema({
+export interface UserStats {
+  userId: number;
+  chatId: number;
+  chatType: number;
+  date: Date;
+  messages: number;
+  words: number;
+  commands: number;
+  photos: number;
+  audio: number;
+  documents: number;
+  gifs: number;
+  stickers: number;
+  videos: number;
+}
+
+const schema = new Schema<UserStats>(
+  {
     userId: { type: Number, ref: 'User' },
     chatId: Number,
     chatType: String,
@@ -14,22 +31,8 @@ const schema = new Schema({
     gifs: Number,
     stickers: Number,
     videos: Number,
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('Statistics', schema);
-
-export interface UserStats {
-    userId: number;
-    chatId: number;
-    chatType: number;
-    date: Date;
-    messages: number;
-    words: number;
-    commands: number;
-    photos: number;
-    audio: number;
-    documents: number;
-    gifs: number;
-    stickers: number;
-    videos: number;
-}
+export const UserStatsModel = mongoose.model<UserStats>('Statistics', schema);

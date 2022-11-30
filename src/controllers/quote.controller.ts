@@ -1,72 +1,71 @@
-import { TelegrafContext } from "telegraf/typings/context";
+import { TelegrafContext } from 'telegraf/typings/context';
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 import { bot } from '../index';
-import { isWeekend } from "../helpers/dates";
+import { isWeekend } from '../helpers/dates';
 import quotes from '../assets/quotes.json';
 import { random } from '../helpers/random';
 
-let groupId = process.env.GROUP_CHAT_ID || "";
+let groupId = process.env.GROUP_CHAT_ID || '';
 let ENABLE_QUOTES = process.env.ENABLE_QUOTES || false;
 
 // command: /quote
 // result: send random quote
 export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
-    try {
-        let quote = await getQuote();
-        let msg = `💡 ציטוט אקראי:\n
-        "${quote.quote}"`
-        if (quote.author) {
-            msg += `\n(${quote.author})`;
-        }
-        return ctx.reply(msg);
-    } catch (error) {
-        ctx.reply('מצטער, אין לי משהו חכם לומר כרגע 🤐');
-        console.log(error);
+  try {
+    let quote = await getQuote();
+    let msg = `💡 ציטוט אקראי:\n
+        "${quote.quote}"`;
+    if (quote.author) {
+      msg += `\n(${quote.author})`;
     }
+    return ctx.reply(msg);
+  } catch (error) {
+    ctx.reply('מצטער, אין לי משהו חכם לומר כרגע 🤐');
+    console.log(error);
+  }
 }
 
 // command: /toogle_quotes
 // result: toggle daily quotes on/off
 export async function toggleQuotesMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
-    try {
-        ENABLE_QUOTES = !ENABLE_QUOTES;
-        let reply = 'הציטוט השבועי עכשיו ';
-        reply += (ENABLE_QUOTES) ? 'דלוק ✅' : 'כבוי ❌';
-        return ctx.reply(reply)
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    ENABLE_QUOTES = !ENABLE_QUOTES;
+    let reply = 'הציטוט השבועי עכשיו ';
+    reply += ENABLE_QUOTES ? 'דלוק ✅' : 'כבוי ❌';
+    return ctx.reply(reply);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function quoteSchedular() {
-    try {
-        // ignore if weekend, or if quotes disabled
-        if (isWeekend() || !ENABLE_QUOTES) {
-            return;
-        }
-        let quote = await getQuote();
-        let msg = `💡 הציטוט השבועי:\n
-        "${quote.quote}"`
-        if (quote.author) {
-            msg += `\n(${quote.author})`;
-        }
-        await bot.telegram.sendMessage(groupId, msg);
-    } catch (error) {
-        console.log(error);
+  try {
+    // ignore if weekend, or if quotes disabled
+    if (isWeekend() || !ENABLE_QUOTES) {
+      return;
     }
+    let quote = await getQuote();
+    let msg = `💡 הציטוט השבועי:\n
+        "${quote.quote}"`;
+    if (quote.author) {
+      msg += `\n(${quote.author})`;
+    }
+    await bot.telegram.sendMessage(groupId, msg);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-
 export interface Quote {
-    rank?: string;
-    quote?: string;
-    author?: string;
+  rank?: string;
+  quote?: string;
+  author?: string;
 }
 
 async function getQuote(): Promise<Quote> {
-    let quote: Quote = random(quotes);
-    return Promise.resolve(quote);
+  let quote: Quote = random(quotes);
+  return Promise.resolve(quote);
 }
 
 // async function getQuote(): Promise<Quote> {

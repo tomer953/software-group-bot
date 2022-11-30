@@ -1,12 +1,24 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose';
 
-const schema = new Schema({
+export interface User {
+  _id: number;
+  is_bot: boolean;
+  first_name: string;
+  username: string;
+  language_code: string;
+  role: 'user' | 'admin';
+}
+
+const schema = new Schema<User>(
+  {
     _id: Number,
     is_bot: Boolean,
     first_name: String,
     username: String,
     language_code: String,
     role: { type: String, default: 'user' },
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('User', schema);
+export const UserModel = mongoose.model<User>('User', schema);
