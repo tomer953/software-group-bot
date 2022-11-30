@@ -1,21 +1,12 @@
-import axios from 'axios';
-import { Context } from 'telegraf';
+import { MiddlewareFn } from 'telegraf';
+import { CustomContext } from '../models/context.interface';
 
-const URL = process.env.URL || '';
-
-export async function pingMiddleware(ctx: Context, next: () => Promise<void>) {
+export const pingMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
   try {
-    let user: any = (<any>ctx).user;
+    console.log('inside ping')
+    let user = ctx.user;
     ctx.reply(user.first_name + ', pong!');
   } catch (error) {
     console.log(error);
   }
-}
-
-export async function pingHeroku() {
-  try {
-    await axios.get(URL);
-  } catch (error) {
-    // ignore error from the ping
-  }
-}
+};

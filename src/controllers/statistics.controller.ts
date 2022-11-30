@@ -1,7 +1,8 @@
-import { Context } from 'telegraf';
-const Statistics = require('../models/statistics.model');
+import { MiddlewareFn } from 'telegraf';
+import { CustomContext } from '../models/context.interface';
+import { UserStatsModel } from '../models/statistics.model';
 
-export async function statsMiddleware(ctx: Context, next: () => Promise<void>) {
+export const statsMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
   try {
     if (ctx.updateType == 'message' && ctx.message) {
       let message = ctx.message;
@@ -20,7 +21,7 @@ export async function statsMiddleware(ctx: Context, next: () => Promise<void>) {
       // get the current statistics document (create if not exist)
       let filter = { userId, chatId, chatType, date };
       let update = {};
-      let doc = await Statistics.findOneAndUpdate(filter, update, {
+      let doc = await UserStatsModel.findOneAndUpdate(filter, update, {
         new: true,
         upsert: true,
       });
@@ -66,4 +67,4 @@ export async function statsMiddleware(ctx: Context, next: () => Promise<void>) {
     console.log(error);
     await next(); // continue if fails
   }
-}
+};

@@ -2,7 +2,6 @@ import schedule, { Job } from 'node-schedule';
 import { getGMT, checkForGMTChanges } from '../helpers/dates';
 import { birthdaySchedular } from './birthday.controller';
 import { updateCoronaCountries } from './corona.controller';
-import { pingHeroku } from './ping.controller';
 import { quoteSchedular } from './quote.controller';
 import { shaharSchedular } from './shahar.controller';
 
@@ -25,6 +24,5 @@ export async function initSchedulars() {
   BotSchedulars.jobs.push(schedule.scheduleJob({ date: 2, hour: 9 - BotSchedulars.GMT, minute: 0 }, shaharSchedular)); // send SHAHAR reminder
   BotSchedulars.jobs.push(schedule.scheduleJob({ date: 3, hour: 9 - BotSchedulars.GMT, minute: 0 }, shaharSchedular)); // send SHAHAR reminder
   BotSchedulars.jobs.push(schedule.scheduleJob('*/10 * * * *', updateCoronaCountries)); // update corona data every 10 minutes
-  BotSchedulars.jobs.push(schedule.scheduleJob('*/10 * * * *', pingHeroku)); // ping own app to prevent idle
   BotSchedulars.jobs.push(schedule.scheduleJob({ hour: 5 - BotSchedulars.GMT, minute: 0 }, checkForGMTChanges)); // check for GMT changes
 }
