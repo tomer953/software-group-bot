@@ -11,10 +11,11 @@ export function isWeekend(): boolean {
 export async function getGMT(): Promise<number> {
   let GMT = +(Config.GMT || 3);
   try {
-    let res = await axios.get('http://worldtimeapi.org/api/timezone/Asia/Jerusalem');
-    let data = res.data;
+    let { data } = await axios.get('http://worldtimeapi.org/api/timezone/Asia/Jerusalem');
     // data.utc_offset is: "+02:00", convert to number
-    GMT = +data.utc_offset.substr(0, 3);
+    if (data.utc_offset) {
+      GMT = +data.utc_offset.substr(0, 3);
+    }
     return GMT;
   } catch (error) {
     console.log(error);

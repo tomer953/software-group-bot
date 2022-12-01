@@ -1,3 +1,4 @@
+import express from 'express';
 import { Telegraf } from 'telegraf';
 
 import { Config } from './config/config';
@@ -15,9 +16,10 @@ import { registerUserMiddleware } from './controllers/user.controller';
 // import { registerUserMiddleware, isAdminMiddleware } from './controllers/user.controller';
 // import { BirthdayWizard } from './scenes/birthday.scene';
 
-const { PORT, BOT_TOKEN, HOST_URL } = Config;
+const { PORT, BOT_TOKEN } = Config;
 // create new bot
 export const bot = new Telegraf<CustomContext>(BOT_TOKEN);
+const app = express();
 
 // Scenes registration
 // const stage = new Scenes.Stage([BirthdayWizard]);
@@ -42,27 +44,23 @@ bot.command('ping', pingMiddleware);
 async function main() {
   try {
     await connectToDb();
-
-    // start bot -> webhooks on prod, polling on dev
-    if (Config.NODE_ENV === 'production') {
-      bot.telegram.setWebhook(`${HOST_URL}/bot${BOT_TOKEN}`);
-      // `/bot${BOT_TOKEN}`, null, Config.PORT
-      bot.launch({
-        webhook: {
-          port: PORT,
-          domain: HOST_URL,
-        },
-      });
-    } else {
-      bot.launch();
-    }
-    console.log(`App is running "local" on port ${PORT}...`);
+    bot.botInfo = await bot.telegram.getMe();
+    
+    let msg = `
+    Bot is running.
+    PORT: ${PORT}
+    BOT: ${bot.botInfo?.username}
+    DATE: ${new Date()}
+    `;
+    
+    bot.launch();
+    app.listen(PORT, () => console.log(msg));
   } catch (err) {
     console.log(err);
   }
 
   // initializee bot schedular
-  // initSchedulars();
+  initSchedulars();
 }
 
 main();

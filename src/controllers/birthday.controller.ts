@@ -1,20 +1,17 @@
 import moment from 'moment';
 
-import { BirthdayModel } from './../models/birthday.model';
+import { BirthdayModel } from '../models/birthday.model';
 import { bot } from '../index';
-import { Context, MiddlewareFn, Scenes } from 'telegraf';
-import { SceneContext } from 'telegraf/typings/scenes';
 import { random } from '../helpers/random';
 import { Config } from '../config/config';
-import { CustomContext } from '../models/context.interface';
 
 // group id to send the bday message
 let groupId = Config.GROUP_CHAT_ID;
 
-export const addBirthdayMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
-  let scene: SceneContext<any> = (<any>ctx).scene;
-  await scene.enter('birthday_wizard');
-};
+// export const addBirthdayMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
+//   let scene: SceneContext<any> = (<any>ctx).scene;
+//   await scene.enter('birthday_wizard');
+// };
 
 export async function birthdaySchedular() {
   try {
@@ -77,8 +74,8 @@ const masterSticker = 'CAACAgIAAxkBAAFJfgtiYAOKMOrppUJg4NEpFSybcA_GWwACcBAAAmrAu
 function getGreetingMessage(bday: any) {
   if (bday.name == 'master_tomer') {
     return `Happy birthday to my master, sensei, mentor, owner, admin and creator.
-        old age: 11111 (binary)
-        new age: 2^5
+        old age: 2^5
+        new age: 100001 (Binary)
         Happy b-day t0m3r!
         `;
   }
