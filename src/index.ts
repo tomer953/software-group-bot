@@ -4,17 +4,13 @@ import { Telegraf } from 'telegraf';
 import { Config } from './config/config';
 import { connectToDb } from './db';
 import { CustomContext } from './models/context.interface';
-
-import { pingMiddleware } from './controllers/ping.controller';
-// import { addBirthdayMiddleware } from './controllers/birthday.controller';
-// import { getCoronaMiddleware, changeCoronaPageHandler, sendCoronaDataHandler } from './controllers/corona.controller';
-// import { getQuoteMiddleware, toggleQuotesMiddleware } from './controllers/quote.controller';
-import { initSchedulars } from './controllers/schedulars.controller';
 import { registerUserMiddleware } from './controllers/user.controller';
-// import { getShabatMiddleware } from './controllers/shabat.controller';
-// import { statsMiddleware } from './controllers/statistics.controller';
-// import { registerUserMiddleware, isAdminMiddleware } from './controllers/user.controller';
-// import { BirthdayWizard } from './scenes/birthday.scene';
+import { initSchedulars } from './controllers/schedulars.controller';
+
+// commands
+import { pingMiddleware } from './controllers/ping.controller';
+import { getQuoteMiddleware } from './controllers/quote.controller';
+
 
 const { PORT, BOT_TOKEN } = Config;
 // create new bot
@@ -31,8 +27,8 @@ bot.use(registerUserMiddleware); // add ctx.user
 
 // handle commands
 bot.command('ping', pingMiddleware);
+bot.command('quote', getQuoteMiddleware);
 // bot.command('add_birthday', isAdminMiddleware, addBirthdayMiddleware);
-// bot.command('quote', getQuoteMiddleware);
 // bot.command('toggle_quotes', isAdminMiddleware, toggleQuotesMiddleware);
 // bot.command('corona', getCoronaMiddleware);
 // bot.command('shabat', getShabatMiddleware);

@@ -1,4 +1,4 @@
-import { config } from "dotenv";
+import { config } from 'dotenv';
 config(); // read from .env file, insert to process.env
 
 export class Config {
@@ -7,7 +7,7 @@ export class Config {
    * @example 'local' | 'production'
    * @default 'local'
    */
-  public static NODE_ENV = process.env.NODE_ENV || "local";
+  public static NODE_ENV = process.env.NODE_ENV || 'local';
 
   /**
    * express port
@@ -41,4 +41,13 @@ export class Config {
    * Telegram group chat id
    */
   public static GROUP_CHAT_ID = process.env.GROUP_CHAT_ID;
+
+  /**
+   * Flag to enable or disable quotes
+   */
+  public static ENABLE_QUOTES = parseBoolean(process.env.ENABLE_QUOTES);
+}
+
+function parseBoolean(str: string): boolean {
+  return str && str.toLowerCase() === 'true';
 }

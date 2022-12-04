@@ -1,5 +1,8 @@
+import { Config } from '../config/config';
 import { bot } from '../index';
-let groupId = process.env.GROUP_CHAT_ID || '';
+
+const GROUP_CHAT_ID = Config.GROUP_CHAT_ID;
+
 export async function shaharSchedular() {
   try {
     let d = new Date();
@@ -13,7 +16,7 @@ export async function shaharSchedular() {
     }
 
     let msg = `💡 * תזכורת - לא לשכוח לסגור שחר *`;
-    await bot.telegram.sendMessage(groupId, msg, { parse_mode: 'Markdown' });
+    await bot.telegram.sendMessage(GROUP_CHAT_ID, msg, { parse_mode: 'Markdown' });
   } catch (error) {
     console.log(error);
   }

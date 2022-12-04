@@ -1,17 +1,17 @@
-import { TelegrafContext } from 'telegraf/typings/context';
-import axios from 'axios';
-import { parse } from 'node-html-parser';
+import { MiddlewareFn } from 'telegraf';
+
 import { bot } from '../index';
 import { isWeekend } from '../helpers/dates';
 import quotes from '../assets/quotes.json';
 import { random } from '../helpers/random';
+import { CustomContext } from '../models/context.interface';
+import { Config } from '../config/config';
 
-let groupId = process.env.GROUP_CHAT_ID || '';
-let ENABLE_QUOTES = process.env.ENABLE_QUOTES || false;
+let { ENABLE_QUOTES, GROUP_CHAT_ID } = Config;
 
 // command: /quote
 // result: send random quote
-export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
+export const getQuoteMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
   try {
     let quote = await getQuote();
     let msg = `💡 ציטוט אקראי:\n
@@ -24,11 +24,11 @@ export async function getQuoteMiddleware(ctx: TelegrafContext, next: () => Promi
     ctx.reply('מצטער, אין לי משהו חכם לומר כרגע 🤐');
     console.log(error);
   }
-}
+};
 
 // command: /toogle_quotes
 // result: toggle daily quotes on/off
-export async function toggleQuotesMiddleware(ctx: TelegrafContext, next: () => Promise<void>) {
+export const toggleQuotesMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
   try {
     ENABLE_QUOTES = !ENABLE_QUOTES;
     let reply = 'הציטוט השבועי עכשיו ';
@@ -37,7 +37,7 @@ export async function toggleQuotesMiddleware(ctx: TelegrafContext, next: () => P
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export async function quoteSchedular() {
   try {
@@ -51,7 +51,7 @@ export async function quoteSchedular() {
     if (quote.author) {
       msg += `\n(${quote.author})`;
     }
-    await bot.telegram.sendMessage(groupId, msg);
+    await bot.telegram.sendMessage(GROUP_CHAT_ID, msg);
   } catch (error) {
     console.log(error);
   }
@@ -65,7 +65,7 @@ export interface Quote {
 
 async function getQuote(): Promise<Quote> {
   let quote: Quote = random(quotes);
-  return Promise.resolve(quote);
+  return quote;
 }
 
 // async function getQuote(): Promise<Quote> {
