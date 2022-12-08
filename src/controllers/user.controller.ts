@@ -29,7 +29,7 @@ export const registerUserMiddleware: MiddlewareFn<CustomContext> = async functio
 
 export const isAdminMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
   if (!ctx.isAdmin) {
-    return ctx.reply('Unauthorized access.');
+    return await ctx.reply('Unauthorized access.');
   }
   return await next();
 };

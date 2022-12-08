@@ -4,14 +4,21 @@ import { BirthdayModel } from '../models/birthday.model';
 import { bot } from '../index';
 import { random } from '../helpers/random';
 import { Config } from '../config/config';
+import { CustomContext } from '../models/context.interface';
+import { MiddlewareFn } from 'telegraf';
 
 // group id to send the bday message
 let groupId = Config.GROUP_CHAT_ID;
 
-// export const addBirthdayMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
-//   let scene: SceneContext<any> = (<any>ctx).scene;
-//   await scene.enter('birthday_wizard');
-// };
+export const addBirthdayMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
+  try {
+
+    console.log('ctx.scene', ctx.wizard);
+    await ctx.scene.enter('birthday_wizard');
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export async function birthdaySchedular() {
   try {
