@@ -6,6 +6,9 @@ export interface Birthday {
   name: string;
   gender: 'male' | 'female';
   birthday: string;
+  greeting?: string;
+  stickerId?: string;
+  isMaster?: boolean;
 }
 const schema = new Schema<Birthday>(
   {
@@ -13,6 +16,9 @@ const schema = new Schema<Birthday>(
     name: String,
     gender: { type: String, enum: ['female', 'male'], default: 'male' },
     birthday: String,
+    greeting: String,
+    stickerId: String,
+    isMaster: Boolean
   },
   { timestamps: true }
 );

@@ -1,10 +1,17 @@
 import axios from 'axios';
+
 import { Config } from '../config/config';
 import { BotSchedulars, initSchedulars } from '../controllers/schedulars.controller';
 // return true if today is SAT or FRI
 export function isWeekend(): boolean {
   let now = new Date();
   return now.getDay() == 5 || now.getDay() == 6;
+}
+
+// check if has same day/month (but not same year)
+export function isTodayBirthday(d: Date) {
+  let now = new Date();
+  return now.getDate() == d.getDate() && now.getMonth() == d.getMonth();
 }
 
 // try to get israel GMT time from api, fallback to .env setting, fallback to 3
