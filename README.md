@@ -4,7 +4,7 @@ Telegram bot for our software group (Typescript + Telegraf)
 Deployed to Azure
 
 
-### env variables keys:
+### ENV variables keys:
 
 ```
 NODE_ENV=DEV
