@@ -1,6 +1,8 @@
 # software-group-bot
 Telegram bot for our software group (Typescript + Telegraf)
 
+Deployed to Azure
+
 
 ### env variables keys:
 
