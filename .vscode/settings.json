@@ -1,7 +1,8 @@
 {
     "appService.zipIgnorePattern": [
         "node_modules{,/**}",
-        ".vscode{,/**}"
+        ".vscode{,/**}",
+        ".env{,/**}"
     ],
     "appService.defaultWebAppToDeploy": "/subscriptions/f824e167-f73d-45be-b871-4991c1bf0d26/AppServices/subscriptions/f824e167-f73d-45be-b871-4991c1bf0d26/resourceGroups/antonbotG/providers/Microsoft.Web/sites/antonbot",
     "appService.deploySubpath": ".",

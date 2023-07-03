@@ -43,6 +43,11 @@ export class Config {
   public static GROUP_CHAT_ID = process.env.GROUP_CHAT_ID;
 
   /**
+   * Telegram chat id of the bot owner
+   */
+  public static ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
+
+  /**
    * Flag to enable or disable quotes
    */
   public static ENABLE_QUOTES = parseBoolean(process.env.ENABLE_QUOTES);

@@ -44,7 +44,7 @@ bot.command('toggle_quotes', isAdminMiddleware, toggleQuotesMiddleware);
 async function main() {
   try {
     await connectToDb();
-    bot.botInfo = await bot.telegram.getMe();``
+    bot.botInfo = await bot.telegram.getMe();
 
     let msg = `
     Bot is running.
@@ -54,6 +54,7 @@ async function main() {
     `;
 
     bot.launch();
+    bot.telegram.sendMessage(Config.ADMIN_CHAT_ID, 'Hello Master, bot activated for group: ' + Config.GROUP_CHAT_ID);
     app.listen(PORT, () => console.log(msg));
   } catch (err) {
     console.log(err);
