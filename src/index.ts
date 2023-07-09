@@ -54,18 +54,18 @@ async function main() {
     `;
 
     bot.launch();
-    bot.telegram.sendMessage(Config.ADMIN_CHAT_ID, 'Hello Master, bot activated for group: ' + Config.GROUP_CHAT_ID);
+    await bot.telegram.sendMessage(Config.ADMIN_CHAT_ID, 'Hello Master, bot activated for group: ' + Config.GROUP_CHAT_ID);
     app.listen(PORT, () => console.log(msg));
+
+    // initializee bot schedular
+    initSchedulars();
+
+    // Graceful stop
+    process.once('SIGINT', () => bot.stop('SIGINT'));
+    process.once('SIGTERM', () => bot.stop('SIGTERM'));
   } catch (err) {
     console.log(err);
   }
-
-  // initializee bot schedular
-  initSchedulars();
-
-  // Graceful stop
-  process.once('SIGINT', () => bot.stop('SIGINT'));
-  process.once('SIGTERM', () => bot.stop('SIGTERM'));
 }
 
 main();
