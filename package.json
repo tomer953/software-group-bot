@@ -1,6 +1,6 @@
 {
   "name": "software-group-bot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Telegram bot for our software group",
   "main": "dist/index.js",
   "scripts": {
