@@ -13,7 +13,6 @@ let groupId = Config.GROUP_CHAT_ID;
 
 export const addBirthdayMiddleware: MiddlewareFn<CustomContext> = async function (ctx, next) {
   try {
-    console.log('ctx.scene', ctx.wizard);
     await ctx.scene.enter('birthday_wizard');
   } catch (error) {
     console.log(error);

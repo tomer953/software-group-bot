@@ -42,7 +42,6 @@ export const BirthdayWizard = new Scenes.WizardScene<CustomContext>(
     }
     let birthday = ctx.message.text;
     let momentDate = moment(birthday, 'DD-MM');
-    console.log('birthday', birthday, momentDate.format('DD-MM-YYYY'));
 
     // date validation
     if (!momentDate.isValid()) {
@@ -51,17 +50,43 @@ export const BirthdayWizard = new Scenes.WizardScene<CustomContext>(
       return;
     }
 
-    // send "Are you sure?"
-    let msg = `תודה, האם לשמור?
-            \nDisplay name: ${ctx.scene.state['name']}
-            \nBirthday: ${birthday}`;
-    await ctx.reply(msg, Markup.inlineKeyboard([Markup.button.callback('✅', 'SAVE_BDAY'), Markup.button.callback('❌', 'CANCEL_BDAY')]));
-
     // add date to context
-    ctx.scene.state['date'] = `${momentDate.format('DD-MM')}`;
-    return ctx.wizard.next();
+    ctx.scene.state['birthday'] = `${momentDate.format('DD-MM')}`;
+
+    // # ask for gender
+    let msg = 'תודה, הכנס מין:';
+    await ctx.reply(msg, Markup.inlineKeyboard([Markup.button.callback('👦', 'SET_MALE'), Markup.button.callback('👩', 'SET_FEMALE')]));
+    // return ctx.wizard.next();
   }
 );
+
+// # set gender male
+BirthdayWizard.action('SET_MALE', async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.editMessageReplyMarkup(null);
+  ctx.scene.state['gender'] = 'male';
+  await ctx.reply('male');
+  await sendConfirmMsg(ctx);
+});
+
+// # set gender male
+BirthdayWizard.action('SET_FEMALE', async (ctx) => {
+  await ctx.answerCbQuery();
+  await ctx.editMessageReplyMarkup(null);
+  await ctx.reply('female');
+  ctx.scene.state['gender'] = 'female';
+  await sendConfirmMsg(ctx);
+});
+
+const sendConfirmMsg = async (ctx) => {
+  // send "Are you sure?"
+  let msg = `תודה, האם לשמור?
+      \nDisplay name: ${ctx.scene.state['name']}
+      \nBirthday: ${ctx.scene.state['birthday']}
+      \nGender: ${ctx.scene.state['gender']}`;
+  await ctx.reply(msg, Markup.inlineKeyboard([Markup.button.callback('✅', 'SAVE_BDAY'), Markup.button.callback('❌', 'CANCEL_BDAY')]));
+  return ctx.wizard.next();
+};
 
 // # handle cancel button
 BirthdayWizard.action('CANCEL_BDAY', async (ctx) => {
@@ -74,8 +99,9 @@ BirthdayWizard.action('CANCEL_BDAY', async (ctx) => {
 // # handle save button
 BirthdayWizard.action('SAVE_BDAY', async (ctx) => {
   await new BirthdayModel({
-    name: (<any>ctx).wizard.state.name,
-    birthday: (<any>ctx).wizard.state.birthday,
+    name: ctx.wizard.state['name'],
+    birthday: ctx.wizard.state['birthday'],
+    gender: ctx.scene.state['gender'],
   }).save();
   await ctx.answerCbQuery();
   await ctx.editMessageReplyMarkup(null);
